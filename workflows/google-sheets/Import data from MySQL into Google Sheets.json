@@ -1,0 +1,120 @@
+{
+  "name": "Import data from MySQL into Google Sheets",
+  "nodes": [
+    {
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "mode": "everyWeek",
+              "hour": 5
+            }
+          ]
+        }
+      },
+      "name": "Cron",
+      "type": "n8n-nodes-base.cron",
+      "position": [
+        32,
+        -112
+      ],
+      "typeVersion": 1,
+      "id": "76edd9b7-f2ab-4fb1-84f6-3369b0b78b49"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM books;",
+        "options": {}
+      },
+      "name": "MySQL - select",
+      "type": "n8n-nodes-base.mySql",
+      "position": [
+        240,
+        -112
+      ],
+      "typeVersion": 1,
+      "id": "34bbb8e8-9b9e-42bb-8491-ff1da3a5f680"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "operation": "append",
+        "sheetId": "qwertz",
+        "options": {}
+      },
+      "name": "Google Sheets - write",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [
+        432,
+        -112
+      ],
+      "typeVersion": 1,
+      "id": "e71143ca-b08c-40cb-9f67-0c8fb138cfeb"
+    },
+    {
+      "parameters": {
+        "text": "hi  \ntoday i import data mysql for google sheet.\nDon't replay.",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        640,
+        -112
+      ],
+      "id": "950f5bce-c425-4a0b-a014-07def5df2627",
+      "name": "Send a text message",
+      "webhookId": "711176f3-983e-4db3-88bc-a33246b612a1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Cron": {
+      "main": [
+        [
+          {
+            "node": "MySQL - select",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MySQL - select": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets - write",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets - write": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "da9a0d5b-8035-4933-b684-5e474cf301f5",
+  "meta": {
+    "instanceId": "7d5c5a493619fd80f276987f2fdf40e9babef8f95a5cf2dd02f88a7f592fa2d8"
+  },
+  "nodeGroups": [],
+  "id": "CSw8cfw4sJ2NXAKv",
+  "tags": []
+}
