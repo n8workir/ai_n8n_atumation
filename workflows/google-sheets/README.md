@@ -2,7 +2,7 @@
 
 
 ## 📊 انتقال خودکار اطلاعات MySQL به Google Sheets
-
+: ### workflows/google-sheets/Import data from MySQL into Google Sheets.json
 این ورک‌فلو به‌صورت زمان‌بندی‌شده اطلاعات را از دیتابیس **MySQL** دریافت کرده، به **Google Sheets** منتقل می‌کند و پس از اتمام عملیات یک پیام اطلاع‌رسانی در **تلگرام** ارسال می‌کند. <FileCite ref_id="turn1file0" line_range_start={6} line_range_end={67}/>
 
 ### ✨ کاربردها
