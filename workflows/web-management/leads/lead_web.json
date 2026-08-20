@@ -1,0 +1,187 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lead-form",
+        "responseMode": "streaming",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "669ff647-097d-4189-a4bf-0148a256b989",
+      "name": "Webhook",
+      "webhookId": "8c1b189e-29c4-41da-b3aa-509b66b4d675"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"name\": \"{{ $json.body.data.fields[0].value }}\",\n  \"phone\": \"{{ $json.body.data.fields[1].value }}\",\n  \"message\": \"{{ $json.body.data.fields[2].value }}\"\n} ",
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "a8afef72-e121-4ea6-a16f-d47f63af6302",
+      "name": "Edit Fields",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "11Y_och62jJQg71qz6NP-Ib2dGpiqny080uPpg0NAZaA",
+          "mode": "list",
+          "cachedResultName": "n8n testy 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/11Y_och62jJQg71qz6NP-Ib2dGpiqny080uPpg0NAZaA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/11Y_och62jJQg71qz6NP-Ib2dGpiqny080uPpg0NAZaA/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "name": "={{ $json.name }}",
+            "phone": "={{ $json.phone }}",
+            "message": "={{ $json.message }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        416,
+        0
+      ],
+      "id": "5042e700-10ab-4d9f-9f96-beb9bc66f877",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ROx0UMSSFVO9TAb6",
+          "name": "Google Sheets OAuth2 API"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "chatId": "nntesstynn",
+        "text": "={{ $json.name }}\n{{ $json.message }}\n{{ $json.message }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        624,
+        0
+      ],
+      "id": "e56eeaf4-1eb9-4bae-9384-608f9a454be2",
+      "name": "Send a text message",
+      "webhookId": "0e3ee30d-1e51-4055-9677-679b9e38e5f5",
+      "credentials": {
+        "telegramApi": {
+          "id": "S8nOJoWQv2E8P3g0",
+          "name": "Telegram account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "4b1a3970-2337-4ea4-9f9f-997c38e0b02b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ff480e3eda6cde1795c6da08ea369a6e019942af87e3a93250205705dd327957"
+  },
+  "nodeGroups": [],
+  "id": "E5wJQBrXoFvHcoU8",
+  "tags": []
+}
